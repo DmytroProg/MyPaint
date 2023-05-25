@@ -61,7 +61,7 @@
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Grid.Row="0">
@@ -191,10 +191,117 @@
                     <Border Grid.Column="3" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Brown"></Canvas>
+                        <Canvas Background="Red"></Canvas>
+                    </Border>
+                    <Border Grid.Column="4" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Orange"></Canvas>
+                    </Border>
+                    <Border Grid.Column="5" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Yellow"></Canvas>
+                    </Border>
+                    <Border Grid.Column="6" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Green"></Canvas>
+                    </Border>
+                    <Border Grid.Column="7" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Cyan"></Canvas>
+                    </Border>
+                    <Border Grid.Column="8" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Blue"></Canvas>
+                    </Border>
+                    <Border Grid.Column="9" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Purple"></Canvas>
+                    </Border>
+                    <!--2 row-->
+                    <Border Grid.Column="0" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="White"></Canvas>
+                    </Border>
+                    <Border Grid.Column="1" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Silver"></Canvas>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="RosyBrown"></Canvas>
+                    </Border>
+                    <Border Grid.Column="3" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Pink"></Canvas>
+                    </Border>
+                    <Border Grid.Column="4" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Gold"></Canvas>
+                    </Border>
+                    <Border Grid.Column="5" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="LightYellow"></Canvas>
+                    </Border>
+                    <Border Grid.Column="6" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="LightGreen"></Canvas>
+                    </Border>
+                    <Border Grid.Column="7" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="LightBlue"></Canvas>
+                    </Border>
+                    <Border Grid.Column="8" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="CornflowerBlue"></Canvas>
+                    </Border>
+                    <Border Grid.Column="9" Grid.Row="1" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="BlueViolet"></Canvas>
                     </Border>
                 </Grid>
 
+                <StackPanel Grid.Column="11" Grid.Row="0"
+                            Background="Transparent" x:Name="diffColorBtn"
+                            MouseEnter="colorBtn_MouseEnter"
+                            MouseLeave="colorBtn_MouseLeave">
+                    <StackPanel Margin="5">
+                        <Border Height="30" Width="30" BorderThickness="2" 
+                            BorderBrush="Gray">
+                            <Canvas x:Name="diffColor">
+                                <Canvas.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="Red" Offset="0"></GradientStop>
+                                        <GradientStop Color="Yellow" Offset="0.2"></GradientStop>
+                                        <GradientStop Color="Green" Offset="0.4"></GradientStop>
+                                        <GradientStop Color="Cyan" Offset="0.6"></GradientStop>
+                                        <GradientStop Color="Blue" Offset="0.8"></GradientStop>
+                                        <GradientStop Color="Pink" Offset="1"></GradientStop>
+                                        
+                                    </LinearGradientBrush>
+                                </Canvas.Background>
+                            </Canvas>
+                        </Border>
+                        <TextBlock FontSize="12" TextAlignment="Center"
+                                   TextWrapping="WrapWithOverflow" Width="60">
+                            Редагувати палітру</TextBlock>
+                    </StackPanel>
+                </StackPanel>
 
                 <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
                            TextAlignment="Center" Foreground="Gray">
