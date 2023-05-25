@@ -1,0 +1,247 @@
+﻿<Window x:Class="MyPaint.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyPaint"
+        mc:Ignorable="d"
+        Title="" Height="800" Width="1200" WindowStartupLocation="CenterOwner"
+        MouseMove="RectMouseMove"
+        MouseUp="ScrollViewer_MouseUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="90"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
+            <TextBlock Height="20" Width="50" Background="#1979CA"
+                       Foreground="White" TextAlignment="Center"
+                       VerticalAlignment="Center" x:Name="fileTab"
+                       MouseEnter="fileTab_MouseEnter"
+                       MouseLeave="fileTab_MouseLeave">
+                Файл
+            </TextBlock>
+            <Border BorderThickness="0.5 0.5 0.5 0" BorderBrush="Gray">
+                <TextBlock Height="20" Width="60" Background="#F5F6F7"
+                       Foreground="Black" TextAlignment="Center"
+                       VerticalAlignment="Center" x:Name="mainTab"
+                       MouseLeftButtonDown="mainTab_MouseLeftButtonDown">
+                    Основне
+                </TextBlock>
+            </Border>
+
+            <Border BorderThickness="0.5 0.5 0.5 0" BorderBrush="White">
+                <TextBlock Height="20" Width="60" Background="White"
+                       Foreground="Black" TextAlignment="Center"
+                       VerticalAlignment="Center" x:Name="viewTab"
+                           MouseLeftButtonDown="viewTab_MouseLeftButtonDown">
+                    Вигляд
+                </TextBlock>
+            </Border>
+        </StackPanel>
+
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0.5">
+            <Grid Background="#F5F6F7" x:Name="mainPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Grid.Row="0">
+                    <Image Source="/Images/paste.png" Height="35" Width="50"
+                           Margin="5"></Image>
+                    <Button Margin="5, 0" BorderThickness="0" Background="Transparent">
+                        Вставити
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="0" Margin="5, 0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="25" Width="25"
+                               Source="/Images/scissors.png"></Image>
+                        <TextBlock VerticalAlignment="Center">Вирізати</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="20" Width="20" Margin="5"
+                               Source="/Images/documents.png"></Image>
+                        <TextBlock VerticalAlignment="Center">Вставити</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" Grid.Row="0">
+                    <Grid x:Name="elementsGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Column="0" Grid.Row="0">
+                            <Image Height="20" Width="20" Margin="5"
+                               Source="/Images/pencil.png" x:Name="pencil"
+                               MouseLeftButtonDown="pencil_MouseLeftButtonDown">
+                            </Image>
+                        </Grid>
+
+                        <Grid Grid.Column="1" Grid.Row="0">
+                            <Image Height="22" Width="22" Margin="3"
+                               Source="/Images/bucket.png" x:Name="bucket"
+                                   MouseLeftButtonDown="bucket_MouseLeftButtonDown">
+                            </Image>
+                        </Grid>
+
+                        <Grid Grid.Column="2" Grid.Row="0">
+                            <Image Height="22" Width="22" Margin="3"
+                               Source="/Images/text.png" x:Name="textElement"
+                                   MouseLeftButtonDown="textElement_MouseLeftButtonDown">
+                            </Image>
+                        </Grid>
+
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="8" Grid.Row="0"
+                            x:Name="color1Btn" 
+                            MouseUp="color1Btn_MouseUp"
+                            MouseEnter="colorBtn_MouseEnter"
+                            MouseLeave="colorBtn_MouseLeave">
+                    <StackPanel Margin="5" >
+                        <Border Height="30" Width="30" BorderThickness="2" 
+                            BorderBrush="Gray">
+                            <Canvas Background="Black" x:Name="color1"></Canvas>
+                        </Border>
+                        <TextBlock FontSize="12" TextAlignment="Center">
+                            Колір</TextBlock>
+                        <TextBlock FontSize="10" TextAlignment="Center"
+                                   VerticalAlignment="Top">
+                            1</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <StackPanel Grid.Column="9" Grid.Row="0"
+                            Background="Transparent" x:Name="color2Btn"
+                            MouseUp="color2Btn_MouseUp"
+                            MouseEnter="colorBtn_MouseEnter"
+                            MouseLeave="colorBtn_MouseLeave">
+                    <StackPanel Margin="5">
+                        <Border Height="30" Width="30" BorderThickness="2" 
+                            BorderBrush="Gray">
+                            <Canvas Background="White" x:Name="color2"></Canvas>
+                        </Border>
+                        <TextBlock FontSize="12" TextAlignment="Center">
+                            Колір</TextBlock>
+                        <TextBlock FontSize="10" TextAlignment="Center"
+                                   VerticalAlignment="Top">
+                            2</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid Grid.Column="10" Grid.Row="0" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Column="0" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Black"></Canvas>
+                    </Border>
+                    <Border Grid.Column="1" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Gray"></Canvas>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Brown"></Canvas>
+                    </Border>
+                    <Border Grid.Column="3" Grid.Row="0" Margin="2"
+                            Height="20" Width="20" BorderThickness="2" 
+                            BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
+                        <Canvas Background="Brown"></Canvas>
+                    </Border>
+                </Grid>
+
+
+                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                           TextAlignment="Center" Foreground="Gray">
+                    Буфер обміну
+                </TextBlock>
+            </Grid>
+        </Border>
+
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" 
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  Background="#DBE4F1" Grid.ColumnSpan="2">
+
+            <Grid Height="500" Width="900" Margin="5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="10"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Canvas Grid.Row="0" Grid.Column="0"
+                    Background="White" x:Name="canvas"
+                    MouseLeftButtonDown="canvas_MouseLeftButtonDown"
+                    MouseMove="canvas_MouseMove"
+                    MouseLeftButtonUp="canvas_MouseLeftButtonUp"
+                        MouseLeave="canvas_MouseLeave">
+                </Canvas>
+                <Rectangle Grid.Row="0" Grid.Column="1" Cursor="SizeWE"
+                    Height="5" Width="5" Fill="White"
+                    Stroke="Black" StrokeThickness="0.5"
+                    MouseDown="RightRectMouseDown"></Rectangle>
+                <Rectangle Grid.Row="1" Grid.Column="1" Cursor="SizeNWSE"
+                    Height="5" Width="5" Fill="White"
+                    Stroke="Black" StrokeThickness="0.5"
+                    MouseDown="RightBottomRectMouseDown"></Rectangle>
+                <Rectangle Grid.Row="1" Grid.Column="0" Cursor="SizeNS"
+                    Height="5" Width="5" Fill="White"
+                    Stroke="Black" StrokeThickness="0.5"
+                    MouseDown="BottomRectMouseDown"></Rectangle>
+            </Grid>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
+
