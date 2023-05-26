@@ -14,3 +14,5 @@ E:\IT STEP\WPF\MyPaint\obj\Debug\MyPaint.csproj.GenerateResource.cache
 E:\IT STEP\WPF\MyPaint\obj\Debug\MyPaint.csproj.CoreCompileInputs.cache
 E:\IT STEP\WPF\MyPaint\obj\Debug\MyPaint.exe
 E:\IT STEP\WPF\MyPaint\obj\Debug\MyPaint.pdb
+E:\IT STEP\WPF\MyPaint\obj\Debug\ColorPickerWindow.g.cs
+E:\IT STEP\WPF\MyPaint\obj\Debug\ColorPickerWindow.baml

@@ -270,5 +270,11 @@ namespace MyPaint
                 color1.Background = ((sender as Border).Child as Canvas).Background;
             else color2.Background = ((sender as Border).Child as Canvas).Background;
         }
+
+        private void diffColorBtn_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ColorPickerWindow colorPickerWindow = new ColorPickerWindow();
+            colorPickerWindow.ShowDialog();
+        }
     }
 }

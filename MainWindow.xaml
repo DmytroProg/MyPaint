@@ -279,7 +279,8 @@
                 <StackPanel Grid.Column="11" Grid.Row="0"
                             Background="Transparent" x:Name="diffColorBtn"
                             MouseEnter="colorBtn_MouseEnter"
-                            MouseLeave="colorBtn_MouseLeave">
+                            MouseLeave="colorBtn_MouseLeave"
+                            MouseUp="diffColorBtn_MouseUp">
                     <StackPanel Margin="5">
                         <Border Height="30" Width="30" BorderThickness="2" 
                             BorderBrush="Gray">
