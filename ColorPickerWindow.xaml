@@ -5,17 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyPaint"
         mc:Ignorable="d"
-        Title="Редагування палітри" Height="310" Width="550"
+        Title="Редагування палітри" Height="335" Width="360"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
             
         </StackPanel>
-        <StackPanel Grid.Column="1" Margin="5">
+        <StackPanel Grid.Column="0" Margin="5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -122,6 +121,10 @@
                              KeyUp="TextBoxRGB_KeyUp">0</TextBox>
                 </Border>
             </Grid>
+            <Button Margin="20, 0" x:Name="addColorBtn"
+                    Click="addColorBtn_Click">
+                Додати колір
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

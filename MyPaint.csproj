@@ -120,5 +120,38 @@
   <ItemGroup>
     <Resource Include="Images\text.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pipette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pipette2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\eraser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\position.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paint3d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\marker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bigPaint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\broom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\wh.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

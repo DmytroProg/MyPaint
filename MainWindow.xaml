@@ -22,6 +22,9 @@
                        VerticalAlignment="Center" x:Name="fileTab"
                        MouseEnter="fileTab_MouseEnter"
                        MouseLeave="fileTab_MouseLeave">
+                <TextBlock.ToolTip>
+                    <TextBlock>Відкрити, зберегти файл</TextBlock>
+                </TextBlock.ToolTip>
                 Файл
             </TextBlock>
             <Border BorderThickness="0.5 0.5 0.5 0" BorderBrush="Gray">
@@ -55,33 +58,143 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Grid.Row="0">
-                    <Image Source="/Images/paste.png" Height="35" Width="50"
-                           Margin="5"></Image>
-                    <Button Margin="5, 0" BorderThickness="0" Background="Transparent">
+                <StackPanel Grid.Column="0" Grid.Row="0"
+                            MouseEnter="Panel_MouseEnter"
+                            MouseLeave="Panel_MouseLeave">
+                    <Image Source="/Images/paste.png" Height="35" Width="50" x:Name="pasteImg"
+                           Margin="5" MouseUp="pasteImg_MouseUp">
+                        <Image.ToolTip>
+                            <StackPanel MaxWidth="200">
+                                <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Вставка</TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow">
+                                            Вставити зображення з буфера обміну</TextBlock>
+                            </StackPanel>
+                        </Image.ToolTip>
+                    </Image>
+                    <TextBlock Margin="5, 0" Background="Transparent">
                         Вставити
-                    </Button>
+                    </TextBlock>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Grid.Row="0" Margin="5, 0">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="25" Width="25"
-                               Source="/Images/scissors.png"></Image>
-                        <TextBlock VerticalAlignment="Center">Вирізати</TextBlock>
+               
+
+                <StackPanel Grid.Column="2" Grid.Row="0"
+                            x:Name="selectBtn" 
+                            MouseUp="selectBtn_MouseUp"
+                            MouseEnter="Panel_MouseEnter"
+                            MouseLeave="Panel_MouseLeave">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Виділення</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Виділити фрагмент зображення</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
+                    <StackPanel Margin="5">
+                        <Rectangle Height="40" Width="40" Stroke="Blue"
+                                   StrokeThickness="2" StrokeDashArray="1, 1">
+                        </Rectangle>
+                        <TextBlock FontSize="12" TextAlignment="Center" Margin="5">
+                            Виділити</TextBlock>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="20" Width="20" Margin="5"
-                               Source="/Images/documents.png"></Image>
-                        <TextBlock VerticalAlignment="Center">Вставити</TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Grid.Row="0"
+                            x:Name="clearBtn" 
+                            MouseUp="color1Btn_MouseUp"
+                            MouseEnter="colorBtn_MouseEnter"
+                            MouseLeave="colorBtn_MouseLeave">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Очистка</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Очищує все полотно</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
+                    <StackPanel Margin="5" 
+                                MouseEnter="Panel_MouseEnter"
+                                MouseLeave="Panel_MouseLeave"
+                                MouseUp="StackPanel_MouseUp">
+                        <Border Height="40" Width="40" BorderThickness="2" 
+                            BorderBrush="Gray">
+                            <Image Source="/Images/broom.png"></Image>
+                        </Border>
+                        <TextBlock FontSize="12" TextAlignment="Center" Margin="5">
+                            Очистити</TextBlock>
                     </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="5" Grid.Row="0"
+                            x:Name="paintBtn" 
+                            MouseUp="paintBtn_MouseUp">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Пензлі</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Малювати пензлями різного типу</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
+                    <StackPanel Margin="5">
+                        <Border Height="36" Width="36" BorderThickness="2" 
+                            BorderBrush="Gray">
+                            <Image x:Name="paintImg" Source="/Images/paint.png"></Image>
+                        </Border>
+                        <StackPanel x:Name="paintsStackPanel"
+                                    MouseEnter="Panel_MouseEnter"
+                                    MouseLeave="Panel_MouseLeave"
+                                    MouseUp="paintsStackPanel_MouseUp">
+                            <TextBlock FontSize="12" TextAlignment="Center">
+                            Пензлі</TextBlock>
+                            <Polygon Points="13,3 18,8, 23,3" Fill="Black"></Polygon>
+                        </StackPanel>
+                        
+                    </StackPanel>
+
+                    <Popup x:Name="paintPopup"
+                           Placement="Bottom"
+                           StaysOpen="False"
+                           MinWidth="130"
+                           PopupAnimation="Fade"
+                           AllowsTransparency="True">
+                        <WrapPanel x:Name="paintWrapPanel" Background="White">
+                            <Grid x:Name="paintElement"
+                                  Margin="3"
+                                  MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="paintElement_MouseUp">
+                                <Image Height="35" Width="35"
+                                       Source="/Images/paint.png"></Image>
+                            </Grid>
+                            <Grid x:Name="markerElement"
+                                  Margin="3"
+                                  MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="markerElement_MouseUp">
+                                <Image Height="35" Width="35"
+                                       Source="/Images/marker.png"></Image>
+                            </Grid>
+                            <Grid x:Name="bigPaintElement"
+                                  Margin="3"
+                                  MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="bigPaintElement_MouseUp">
+                                <Image Height="35" Width="35"
+                                       Source="/Images/bigPaint.png"></Image>
+                            </Grid>
+                        </WrapPanel>
+                    </Popup>
                 </StackPanel>
 
                 <StackPanel Grid.Column="4" Grid.Row="0">
@@ -99,6 +212,14 @@
                             <Image Height="20" Width="20" Margin="5"
                                Source="/Images/pencil.png" x:Name="pencil"
                                MouseLeftButtonDown="pencil_MouseLeftButtonDown">
+                                <Image.ToolTip>
+                                    <StackPanel MaxWidth="200">
+                                        <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Олівець</TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow">
+                                            Малювати лінії довільної форми</TextBlock>
+                                    </StackPanel>
+                                </Image.ToolTip>
                             </Image>
                         </Grid>
 
@@ -106,6 +227,14 @@
                             <Image Height="22" Width="22" Margin="3"
                                Source="/Images/bucket.png" x:Name="bucket"
                                    MouseLeftButtonDown="bucket_MouseLeftButtonDown">
+                                <Image.ToolTip>
+                                    <StackPanel MaxWidth="200">
+                                        <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Заливка</TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow">
+                                            Заповнити ділянку полотна кольором</TextBlock>
+                                    </StackPanel>
+                                </Image.ToolTip>
                             </Image>
                         </Grid>
 
@@ -113,9 +242,46 @@
                             <Image Height="22" Width="22" Margin="3"
                                Source="/Images/text.png" x:Name="textElement"
                                    MouseLeftButtonDown="textElement_MouseLeftButtonDown">
+                                <Image.ToolTip>
+                                    <StackPanel MaxWidth="200">
+                                        <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Текст</TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow">
+                                            Вставити текст у зображення</TextBlock>
+                                    </StackPanel>
+                                </Image.ToolTip>
                             </Image>
                         </Grid>
 
+                        <Grid Grid.Column="0" Grid.Row="1">
+                            <Image Height="20" Width="20" Margin="5"
+                               Source="/Images/eraser.png" x:Name="eraser"
+                               MouseLeftButtonDown="eraser_MouseLeftButtonDown">
+                                <Image.ToolTip>
+                                    <StackPanel MaxWidth="200">
+                                        <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Гумка</TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow">
+                                            Стерти частину злбраження</TextBlock>
+                                    </StackPanel>
+                                </Image.ToolTip>
+                            </Image>
+                        </Grid>
+
+                        <Grid Grid.Column="1" Grid.Row="1">
+                            <Image Height="20" Width="20" Margin="5"
+                               Source="/Images/pipette2.png" x:Name="pipette"
+                               MouseLeftButtonDown="pipette_MouseLeftButtonDown">
+                                <Image.ToolTip>
+                                    <StackPanel MaxWidth="200">
+                                        <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Піпетка</TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow">
+                                            Вибрати колір із зображення</TextBlock>
+                                    </StackPanel>
+                                </Image.ToolTip>
+                            </Image>
+                        </Grid>
                     </Grid>
                 </StackPanel>
 
@@ -124,6 +290,14 @@
                             MouseUp="color1Btn_MouseUp"
                             MouseEnter="colorBtn_MouseEnter"
                             MouseLeave="colorBtn_MouseLeave">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Колір 1</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Цей колір буде використовуватися для олівця, бензлика та заливки</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
                     <StackPanel Margin="5" >
                         <Border Height="30" Width="30" BorderThickness="2" 
                             BorderBrush="Gray">
@@ -137,12 +311,73 @@
                     </StackPanel>
                 </StackPanel>
 
+                <StackPanel Grid.Column="7" Grid.Row="0" x:Name="sizeBtn"
+                            MouseEnter="Panel_MouseEnter"
+                            MouseLeave="Panel_MouseLeave"
+                            MouseUp="sizeBtn_MouseUp">
+                    <Image Source="/Images/size.png" Height="35" Width="50"
+                           Margin="5">
+                        <Image.ToolTip>
+                            <StackPanel MaxWidth="200">
+                                <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Розмір</TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow">
+                                            Вказати ширину вибраного інструмента</TextBlock>
+                            </StackPanel>
+                        </Image.ToolTip>
+                    </Image>
+                    <Button Margin="5, 0" BorderThickness="0" Background="Transparent">
+                        Розмір
+                    </Button>
+
+                    <Popup x:Name="sizePopup"
+                           Placement="Bottom"
+                           StaysOpen="False"
+                           MinWidth="100"
+                           PopupAnimation="Fade"
+                           AllowsTransparency="True">
+                        <StackPanel x:Name="sizeStackPanel" Background="White">
+                            <Grid MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="SizeGrid_MouseUp">
+                                <Rectangle Margin="5, 10" Fill="Black"
+                                           Height="1"></Rectangle>
+                            </Grid>
+                            <Grid MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="SizeGrid_MouseUp">
+                                <Rectangle Margin="5, 10" Fill="Black"
+                                           Height="3"></Rectangle>
+                            </Grid>
+                            <Grid MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="SizeGrid_MouseUp">
+                                <Rectangle Margin="5, 10" Fill="Black"
+                                           Height="7"></Rectangle>
+                            </Grid>
+                            <Grid MouseEnter="Panel_MouseEnter"
+                                  MouseLeave="Panel_MouseLeave"
+                                  MouseUp="SizeGrid_MouseUp">
+                                <Rectangle Margin="5, 10" Fill="Black"
+                                           Height="12"></Rectangle>
+                            </Grid>
+                        </StackPanel>
+                    </Popup>
+                </StackPanel>
 
                 <StackPanel Grid.Column="9" Grid.Row="0"
                             Background="Transparent" x:Name="color2Btn"
                             MouseUp="color2Btn_MouseUp"
                             MouseEnter="colorBtn_MouseEnter"
                             MouseLeave="colorBtn_MouseLeave">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Колір 2</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Цей колір буде використовуватися для стирачки</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
                     <StackPanel Margin="5">
                         <Border Height="30" Width="30" BorderThickness="2" 
                             BorderBrush="Gray">
@@ -176,103 +411,104 @@
                     <Border Grid.Column="0" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Black"></Canvas>
+                        <Canvas Background="Black" ToolTip="Чорний">
+                        </Canvas>
                     </Border>
                     <Border Grid.Column="1" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Gray"></Canvas>
+                        <Canvas Background="Gray" ToolTip="Сірий"></Canvas>
                     </Border>
                     <Border Grid.Column="2" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Brown"></Canvas>
+                        <Canvas Background="Brown" ToolTip="Коричневий"></Canvas>
                     </Border>
                     <Border Grid.Column="3" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Red"></Canvas>
+                        <Canvas Background="Red" ToolTip="Червоний"></Canvas>
                     </Border>
                     <Border Grid.Column="4" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Orange"></Canvas>
+                        <Canvas Background="Orange" ToolTip="Помаранчевий"></Canvas>
                     </Border>
                     <Border Grid.Column="5" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Yellow"></Canvas>
+                        <Canvas Background="Yellow" ToolTip="Жовтий"></Canvas>
                     </Border>
                     <Border Grid.Column="6" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Green"></Canvas>
+                        <Canvas Background="Green" ToolTip="Зелений"></Canvas>
                     </Border>
                     <Border Grid.Column="7" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Cyan"></Canvas>
+                        <Canvas Background="Cyan" ToolTip="Блакитний"></Canvas>
                     </Border>
                     <Border Grid.Column="8" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Blue"></Canvas>
+                        <Canvas Background="Blue" ToolTip="Синій"></Canvas>
                     </Border>
                     <Border Grid.Column="9" Grid.Row="0" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Purple"></Canvas>
+                        <Canvas Background="Purple" ToolTip="Фіолетовий"></Canvas>
                     </Border>
                     <!--2 row-->
                     <Border Grid.Column="0" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="White"></Canvas>
+                        <Canvas Background="White" ToolTip="Білий"></Canvas>
                     </Border>
                     <Border Grid.Column="1" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Silver"></Canvas>
+                        <Canvas Background="Silver" ToolTip="Срібний"></Canvas>
                     </Border>
                     <Border Grid.Column="2" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="RosyBrown"></Canvas>
+                        <Canvas Background="RosyBrown" ToolTip="Рожево-коричневий"></Canvas>
                     </Border>
                     <Border Grid.Column="3" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Pink"></Canvas>
+                        <Canvas Background="Pink" ToolTip="Рожевий"></Canvas>
                     </Border>
                     <Border Grid.Column="4" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="Gold"></Canvas>
+                        <Canvas Background="Gold" ToolTip="Золотистий"></Canvas>
                     </Border>
                     <Border Grid.Column="5" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="LightYellow"></Canvas>
+                        <Canvas Background="LightYellow" ToolTip="Пісочний"></Canvas>
                     </Border>
                     <Border Grid.Column="6" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="LightGreen"></Canvas>
+                        <Canvas Background="LightGreen" ToolTip="Салатовий"></Canvas>
                     </Border>
                     <Border Grid.Column="7" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="LightBlue"></Canvas>
+                        <Canvas Background="LightBlue" ToolTip="Небесний"></Canvas>
                     </Border>
                     <Border Grid.Column="8" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="CornflowerBlue"></Canvas>
+                        <Canvas Background="CornflowerBlue" ToolTip="Сизий"></Canvas>
                     </Border>
                     <Border Grid.Column="9" Grid.Row="1" Margin="2"
                             Height="20" Width="20" BorderThickness="2" 
                             BorderBrush="Gray" MouseUp="ColorPicker_MouseUp">
-                        <Canvas Background="BlueViolet"></Canvas>
+                        <Canvas Background="BlueViolet" ToolTip="Ліловий"></Canvas>
                     </Border>
                 </Grid>
 
@@ -281,6 +517,14 @@
                             MouseEnter="colorBtn_MouseEnter"
                             MouseLeave="colorBtn_MouseLeave"
                             MouseUp="diffColorBtn_MouseUp">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Редагувати палітру</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Вибрати колір із палітри кольорів</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
                     <StackPanel Margin="5">
                         <Border Height="30" Width="30" BorderThickness="2" 
                             BorderBrush="Gray">
@@ -304,9 +548,43 @@
                     </StackPanel>
                 </StackPanel>
 
+                <StackPanel Grid.Column="12" Grid.Row="0"
+                            Background="Transparent" x:Name="paint3DBtn"
+                            MouseEnter="colorBtn_MouseEnter"
+                            MouseLeave="colorBtn_MouseLeave"
+                            MouseUp="paint3DBtn_MouseUp">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            Редагувати в Paint 3D</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Спробуйте більше можливостей редагувати картинку, або малювати в трьохвимірному просторі</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
+                    <StackPanel Margin="5">
+                        <Border Height="30" Width="30" BorderThickness="2" 
+                            BorderBrush="Gray">
+                            <Image Source="/Images/paint3d.png"></Image>
+                        </Border>
+                        <TextBlock FontSize="12" TextAlignment="Center"
+                                   TextWrapping="WrapWithOverflow" Width="60">
+                            Редагувати в Paint 3D</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
                 <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
                            TextAlignment="Center" Foreground="Gray">
                     Буфер обміну
+                </TextBlock>
+
+                <TextBlock Grid.Column="4" Grid.Row="1"
+                           TextAlignment="Center" Foreground="Gray">
+                    Знаряддя
+                </TextBlock>
+
+                <TextBlock Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="4"
+                           TextAlignment="Center" Foreground="Gray">
+                    Кольори
                 </TextBlock>
             </Grid>
         </Border>
@@ -328,7 +606,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="10"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Canvas Grid.Row="0" Grid.Column="0"
+                <Canvas Grid.Row="0" Grid.Column="0" ClipToBounds="True"
                     Background="White" x:Name="canvas"
                     MouseLeftButtonDown="canvas_MouseLeftButtonDown"
                     MouseMove="canvas_MouseMove"
@@ -350,6 +628,32 @@
             </Grid>
         </ScrollViewer>
 
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Image Height="18" Width="18" Margin="1, 1, 5, 1"
+                   Source="/Images/position.png"></Image>
+                <TextBlock x:Name="positionTextBlock"
+                       VerticalAlignment="Center"
+                       ></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Image Height="18" Width="18" Margin="-1, -1, 5, -1"
+                   Source="/Images/wh.png"></Image>
+                <TextBlock x:Name="whTextBlock"
+                   VerticalAlignment="Center"
+                   ></TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
 

@@ -21,11 +21,18 @@ namespace MyPaint
     public partial class ColorPickerWindow : Window
     {
         private Rectangle selectRect;
+        private Canvas chosenColor;
 
         public ColorPickerWindow()
         {
             InitializeComponent();
             FillColorArea();
+        }
+
+        public void ShowDialog(Canvas color)
+        {
+            chosenColor = color;
+            this.ShowDialog();
         }
 
         private void FillColorArea()
@@ -50,8 +57,6 @@ namespace MyPaint
                     {
                         if(e.LeftButton == MouseButtonState.Pressed)
                         {
-                            Canvas.SetLeft(selectRect, e.GetPosition(colorArea).X);
-                            Canvas.SetTop(selectRect, e.GetPosition(colorArea).Y);
                             SolidColorBrush solid = (sender as Rectangle).Fill as SolidColorBrush;
                             var color = System.Drawing.Color.FromArgb(255, solid.Color.R, solid.Color.G, solid.Color.B);
                             hueTextBox.Text = ((int)color.GetHue()).ToString();
@@ -116,6 +121,8 @@ namespace MyPaint
             hueTextBox.Text = ((int)color.GetHue()).ToString();
             contrastTextBox.Text = ((int)(color.GetSaturation() * 360)).ToString();
             brightTextBox.Text = ((int)(color.GetBrightness() * 360 * 2)).ToString();
+            Canvas.SetLeft(selectRect, Math.Min((int)color.GetHue() / 2, 170));
+            Canvas.SetTop(selectRect, Math.Min(180 - ((int)(color.GetSaturation() * 360) / 2), 170));
         }
 
         private void SetRGBColumn()
@@ -124,6 +131,8 @@ namespace MyPaint
             redTextBox.Text = color.R.ToString();
             greenTextBox.Text = color.G.ToString();
             blueTextBox.Text = color.B.ToString();
+            Canvas.SetLeft(selectRect, Math.Min(int.Parse(hueTextBox.Text) / 2, 170));
+            Canvas.SetTop(selectRect, Math.Min(180 - (int.Parse(contrastTextBox.Text) / 2), 170));
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
@@ -152,6 +161,12 @@ namespace MyPaint
         {
             TextBox_KeyDown(sender, e);
             brightSlider.Value = int.Parse(brightTextBox.Text);
+        }
+
+        private void addColorBtn_Click(object sender, RoutedEventArgs e)
+        {
+            chosenColor.Background = pickedColor.Background;
+            this.Close();
         }
     }
 }
