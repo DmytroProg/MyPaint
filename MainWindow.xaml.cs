@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +36,7 @@ namespace MyPaint
         private bool isFirstColor = true;
         private bool isSelecting = false;
         private bool isMovingPhoto = false;
+        private bool isTexting = false;
 
         private Point posSelection;
 
@@ -178,6 +181,7 @@ namespace MyPaint
         {
             LoseSelection();
             ((sender as Image).Parent as Grid).Background = new SolidColorBrush(Color.FromRgb(201, 224, 247));
+            ((sender as Image).Parent as Grid).MouseLeave -= Panel_MouseLeave;
         }
 
         private void LoseSelection()
@@ -185,6 +189,8 @@ namespace MyPaint
             foreach(var item in elementsGrid.Children)
             {
                 (item as Grid).Background = Brushes.Transparent;
+                (item as Grid).MouseLeave -= Panel_MouseLeave;
+                (item as Grid).MouseLeave += Panel_MouseLeave;
             }
             paintBtn.Background = Brushes.Transparent;
         }
@@ -213,11 +219,37 @@ namespace MyPaint
                     r.Fill = color1.Background;
                 return;
             }
-            if(brushType == BrushType.Text)
+            if(brushType == BrushType.Text && !isTexting)
             {
-               
+                TextBox tb = new TextBox() { 
+                    FontSize = 20,
+                    Background = Brushes.Transparent,
+                    Foreground = color1.Background,
+                };
+                Canvas.SetLeft(tb, e.GetPosition(canvas).X);
+                Canvas.SetTop(tb, e.GetPosition(canvas).Y);
+                canvas.Children.Add(tb);
+                isTexting = true;
+                tb.Focus();
+                return;
             }
-            if(brushType == BrushType.Pipette)
+            if (brushType == BrushType.Text && isTexting)
+            {
+                var tBox = (canvas.Children[canvas.Children.Count - 1] as TextBox);
+                TextBlock tb = new TextBlock()
+                {
+                    FontSize = tBox.FontSize,
+                    Background = Brushes.Transparent,
+                    Foreground = tBox.Foreground,
+                    Text = tBox.Text,
+                };
+                Canvas.SetLeft(tb, Canvas.GetLeft(tBox));
+                Canvas.SetTop(tb, Canvas.GetTop(tBox));
+                canvas.Children.Remove(tBox);
+                canvas.Children.Add(tb);
+                isTexting = false;
+            }
+            if (brushType == BrushType.Pipette)
             {
                 ((isFirstColor) ? color1 : color2).Background = canvas.Background;
                 return;
@@ -329,7 +361,10 @@ namespace MyPaint
             }
             if(isSelecting == false && canvas.Children.Contains(selectedZone))
                 canvas.Children.Remove(selectedZone);
-
+            if(brushType == BrushType.Text && isTexting)
+            {
+                (canvas.Children[canvas.Children.Count - 1] as TextBox).Focus();
+            }
             isSelecting = false;
             isDrawing = false;
             if (brushType == BrushType.Eraser)
@@ -567,5 +602,82 @@ namespace MyPaint
             isSelecting = true;
         }
 
+        #region PNG_Work
+        public static void RenderToPNGFile(Visual targetControl, string filename)
+        {
+            var renderTargetBitmap = GetRenderTargetBitmapFromControl(targetControl);
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+            var result = new BitmapImage();
+
+            try
+            {
+                using (var fileStream = new FileStream(filename, FileMode.Create))
+                {
+                    encoder.Save(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"There was an error saving the file: {ex.Message}");
+            }
+        }
+
+        private const double defaultDpi = 96.0;
+
+        private static BitmapSource GetRenderTargetBitmapFromControl(Visual targetControl, double dpi = defaultDpi)
+        {
+            if (targetControl == null) return null;
+
+            var bounds = VisualTreeHelper.GetDescendantBounds(targetControl);
+            var renderTargetBitmap = new RenderTargetBitmap((int)(bounds.Width * dpi / 96.0),
+                                                            (int)(bounds.Height * dpi / 96.0),
+                                                            dpi,
+                                                            dpi,
+                                                            PixelFormats.Pbgra32);
+
+            var drawingVisual = new DrawingVisual();
+
+            using (var drawingContext = drawingVisual.RenderOpen())
+            {
+                var visualBrush = new VisualBrush(targetControl);
+                drawingContext.DrawRectangle(visualBrush, null, new Rect(new Point(), bounds.Size));
+            }
+
+            renderTargetBitmap.Render(drawingVisual);
+            return renderTargetBitmap;
+        }
+        #endregion
+
+        private void saveasBtn_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var brush = canvas.Background;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PNG file (*.png)|*.png|JPEG file (*.jpg)|*.jpg";
+            bool? result = saveFileDialog.ShowDialog();
+
+            if(saveFileDialog.FilterIndex == 1)
+                canvas.Background = Brushes.Transparent;
+
+            this.UpdateLayout();
+
+            if (result == true)
+            {  
+                RenderToPNGFile(canvas, saveFileDialog.FileName);
+            }
+            
+            canvas.Background = brush;
+            
+            filePopup.IsOpen = false;
+            e.Handled = true;
+        }
+
+        private void fileStackPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            filePopup.IsOpen = true;
+        }
     }
 }

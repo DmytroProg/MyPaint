@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyPaint"
         mc:Ignorable="d"
         Title="" Height="800" Width="1200" WindowStartupLocation="CenterOwner"
-        MouseMove="RectMouseMove"
+        MouseMove="RectMouseMove" Icon="/Images/icon.png"
         MouseUp="ScrollViewer_MouseUp">
     <Grid>
         <Grid.RowDefinitions>
@@ -16,7 +16,9 @@
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2"
+                    x:Name="fileStackPanel"
+                    MouseUp="fileStackPanel_MouseUp">
             <TextBlock Height="20" Width="50" Background="#1979CA"
                        Foreground="White" TextAlignment="Center"
                        VerticalAlignment="Center" x:Name="fileTab"
@@ -27,6 +29,30 @@
                 </TextBlock.ToolTip>
                 Файл
             </TextBlock>
+
+            <Popup x:Name="filePopup"
+                   Placement="Bottom"
+                   StaysOpen="False"
+                   MinWidth="130"
+                   PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                <StackPanel Background="Silver">
+                    <StackPanel Orientation="Horizontal" x:Name="createBtn"
+                                MouseEnter="Panel_MouseEnter"
+                                MouseLeave="Panel_MouseLeave">
+                        <Image></Image>
+                        <TextBlock FontSize="16">Створити</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" x:Name="saveasBtn"
+                                MouseEnter="Panel_MouseEnter"
+                                MouseLeave="Panel_MouseLeave"
+                                MouseUp="saveasBtn_MouseUp">
+                        <Image></Image>
+                        <TextBlock FontSize="16">Зберегти як</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Popup>
+
             <Border BorderThickness="0.5 0.5 0.5 0" BorderBrush="Gray">
                 <TextBlock Height="20" Width="60" Background="#F5F6F7"
                        Foreground="Black" TextAlignment="Center"
@@ -85,7 +111,6 @@
                         Вставити
                     </TextBlock>
                 </StackPanel>
-               
 
                 <StackPanel Grid.Column="2" Grid.Row="0"
                             x:Name="selectBtn" 
@@ -208,7 +233,9 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Column="0" Grid.Row="0">
+                        <Grid Grid.Column="0" Grid.Row="0"
+                              MouseEnter="Panel_MouseEnter"
+                              MouseLeave="Panel_MouseLeave">
                             <Image Height="20" Width="20" Margin="5"
                                Source="/Images/pencil.png" x:Name="pencil"
                                MouseLeftButtonDown="pencil_MouseLeftButtonDown">
@@ -223,7 +250,9 @@
                             </Image>
                         </Grid>
 
-                        <Grid Grid.Column="1" Grid.Row="0">
+                        <Grid Grid.Column="1" Grid.Row="0"
+                              MouseEnter="Panel_MouseEnter"
+                              MouseLeave="Panel_MouseLeave">
                             <Image Height="22" Width="22" Margin="3"
                                Source="/Images/bucket.png" x:Name="bucket"
                                    MouseLeftButtonDown="bucket_MouseLeftButtonDown">
@@ -238,7 +267,9 @@
                             </Image>
                         </Grid>
 
-                        <Grid Grid.Column="2" Grid.Row="0">
+                        <Grid Grid.Column="2" Grid.Row="0"
+                              MouseEnter="Panel_MouseEnter"
+                              MouseLeave="Panel_MouseLeave">
                             <Image Height="22" Width="22" Margin="3"
                                Source="/Images/text.png" x:Name="textElement"
                                    MouseLeftButtonDown="textElement_MouseLeftButtonDown">
@@ -253,7 +284,9 @@
                             </Image>
                         </Grid>
 
-                        <Grid Grid.Column="0" Grid.Row="1">
+                        <Grid Grid.Column="0" Grid.Row="1"
+                              MouseEnter="Panel_MouseEnter"
+                              MouseLeave="Panel_MouseLeave">
                             <Image Height="20" Width="20" Margin="5"
                                Source="/Images/eraser.png" x:Name="eraser"
                                MouseLeftButtonDown="eraser_MouseLeftButtonDown">
@@ -268,7 +301,9 @@
                             </Image>
                         </Grid>
 
-                        <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid Grid.Column="1" Grid.Row="1"
+                              MouseEnter="Panel_MouseEnter"
+                              MouseLeave="Panel_MouseLeave">
                             <Image Height="20" Width="20" Margin="5"
                                Source="/Images/pipette2.png" x:Name="pipette"
                                MouseLeftButtonDown="pipette_MouseLeftButtonDown">
@@ -295,7 +330,7 @@
                             <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
                                             Колір 1</TextBlock>
                             <TextBlock TextWrapping="WrapWithOverflow">
-                                            Цей колір буде використовуватися для олівця, бензлика та заливки</TextBlock>
+                                            Цей колір буде використовуватися для олівця, пензликаб тексту та заливки</TextBlock>
                         </StackPanel>
                     </StackPanel.ToolTip>
                     <StackPanel Margin="5" >
