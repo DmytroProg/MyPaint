@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -37,8 +38,11 @@ namespace MyPaint
         private bool isSelecting = false;
         private bool isMovingPhoto = false;
         private bool isTexting = false;
+        private bool isSaved = true;
 
         private Point posSelection;
+        private string path = null;
+        private int format = 0;
 
         enum BrushType
         {
@@ -372,6 +376,9 @@ namespace MyPaint
                 eraserLines.Add(polylines.Last());
                 polylines.Remove(polylines.Last());
             }
+
+            if (brushType != BrushType.None)
+                isSaved = false;
             this.Cursor = Cursors.Arrow;
         }
 
@@ -532,7 +539,7 @@ namespace MyPaint
             ChoosePaint(sender);
         }
 
-        private void StackPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Clear_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (canvas.Children.Contains(selectedZone))
             {
@@ -667,17 +674,88 @@ namespace MyPaint
             if (result == true)
             {  
                 RenderToPNGFile(canvas, saveFileDialog.FileName);
+                path = saveFileDialog.FileName;
+                format = saveFileDialog.FilterIndex;
+                isSaved = true;
             }
             
             canvas.Background = brush;
             
             filePopup.IsOpen = false;
-            e.Handled = true;
+
+            if(e != null)
+                e.Handled = true;
         }
 
         private void fileStackPanel_MouseUp(object sender, MouseButtonEventArgs e)
         {
             filePopup.IsOpen = true;
+        }
+
+        private void saveBtn_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            filePopup.IsOpen = false;
+            if (isSaved) return;
+            if (String.IsNullOrEmpty(path))
+            {
+                saveasBtn_MouseUp(null, e);
+            }
+            else
+            {
+                var brush = canvas.Background;
+
+                if (format == 1)
+                    canvas.Background = Brushes.Transparent;
+
+                this.UpdateLayout();
+
+                RenderToPNGFile(canvas, path);
+                isSaved = true;
+
+                canvas.Background = brush;
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (isSaved) return;
+            MessageBoxResult result = MessageBox.Show("Файл не збережено. Бажаєте зберегти зміни перед закриттям?",
+                "MyPaint", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
+            {
+                saveBtn_MouseUp(null, null);
+                if(!isSaved)
+                    e.Cancel = true;
+            }
+            else if(result == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void createBtn_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            filePopup.IsOpen = false;
+
+            if (!isSaved)
+            {
+                MessageBoxResult result = MessageBox.Show("Файл не збережено. Бажаєте зберегти зміни перед закриттям?",
+                    "MyPaint", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    saveBtn_MouseUp(null, null);
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    filePopup.IsOpen = false;
+                    return;
+                }
+            }
+
+            Clear_MouseUp(null, null);
+            path = null;
+            format = 0;
+            isSaved = true;
         }
     }
 }

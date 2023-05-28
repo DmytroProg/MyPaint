@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="" Height="800" Width="1200" WindowStartupLocation="CenterOwner"
         MouseMove="RectMouseMove" Icon="/Images/icon.png"
-        MouseUp="ScrollViewer_MouseUp">
+        MouseUp="ScrollViewer_MouseUp"
+        Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -38,17 +39,28 @@
                    AllowsTransparency="True">
                 <StackPanel Background="Silver">
                     <StackPanel Orientation="Horizontal" x:Name="createBtn"
-                                MouseEnter="Panel_MouseEnter"
-                                MouseLeave="Panel_MouseLeave">
-                        <Image></Image>
-                        <TextBlock FontSize="16">Створити</TextBlock>
+                                MouseEnter="Panel_MouseEnter" Margin="5"
+                                MouseLeave="Panel_MouseLeave"
+                                MouseUp="createBtn_MouseUp">
+                        <Image Source="/Images/newDoc.png" Stretch="Uniform"
+                               Height="50" Width="50"></Image>
+                        <TextBlock FontSize="16" Padding="5">Створити</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" x:Name="saveBtn"
+                                MouseEnter="Panel_MouseEnter" Margin="5"
+                                MouseLeave="Panel_MouseLeave"
+                                MouseUp="saveBtn_MouseUp">
+                        <Image Source="/Images/save.png" Stretch="Uniform"
+                               Height="50" Width="50"></Image>
+                        <TextBlock FontSize="16" Padding="5">Зберегти</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" x:Name="saveasBtn"
-                                MouseEnter="Panel_MouseEnter"
+                                MouseEnter="Panel_MouseEnter" Margin="5"
                                 MouseLeave="Panel_MouseLeave"
                                 MouseUp="saveasBtn_MouseUp">
-                        <Image></Image>
-                        <TextBlock FontSize="16">Зберегти як</TextBlock>
+                        <Image Source="/Images/save.png" Stretch="Uniform"
+                               Height="50" Width="50"></Image>
+                        <TextBlock FontSize="16" Padding="5">Зберегти як</TextBlock>
                     </StackPanel>
                 </StackPanel>
             </Popup>
@@ -150,7 +162,7 @@
                     <StackPanel Margin="5" 
                                 MouseEnter="Panel_MouseEnter"
                                 MouseLeave="Panel_MouseLeave"
-                                MouseUp="StackPanel_MouseUp">
+                                MouseUp="Clear_MouseUp">
                         <Border Height="40" Width="40" BorderThickness="2" 
                             BorderBrush="Gray">
                             <Image Source="/Images/broom.png"></Image>
