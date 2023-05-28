@@ -8,7 +8,8 @@
         Title="" Height="800" Width="1200" WindowStartupLocation="CenterOwner"
         MouseMove="RectMouseMove" Icon="/Images/icon.png"
         MouseUp="ScrollViewer_MouseUp"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -17,14 +18,13 @@
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2"
-                    x:Name="fileStackPanel"
-                    MouseUp="fileStackPanel_MouseUp">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
             <TextBlock Height="20" Width="50" Background="#1979CA"
                        Foreground="White" TextAlignment="Center"
                        VerticalAlignment="Center" x:Name="fileTab"
                        MouseEnter="fileTab_MouseEnter"
-                       MouseLeave="fileTab_MouseLeave">
+                       MouseLeave="fileTab_MouseLeave"
+                       MouseUp="fileTab_MouseUp">
                 <TextBlock.ToolTip>
                     <TextBlock>Відкрити, зберегти файл</TextBlock>
                 </TextBlock.ToolTip>
@@ -85,7 +85,8 @@
         </StackPanel>
 
         <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0.5">
-            <Grid Background="#F5F6F7" x:Name="mainPanel">
+            <Grid Background="#F5F6F7" x:Name="mainPanel"
+                  Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="20"></RowDefinition>
@@ -93,11 +94,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -124,7 +124,7 @@
                     </TextBlock>
                 </StackPanel>
 
-                <StackPanel Grid.Column="2" Grid.Row="0"
+                <StackPanel Grid.Column="1" Grid.Row="0"
                             x:Name="selectBtn" 
                             MouseUp="selectBtn_MouseUp"
                             MouseEnter="Panel_MouseEnter"
@@ -146,7 +146,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Column="3" Grid.Row="0"
+                <StackPanel Grid.Column="2" Grid.Row="0"
                             x:Name="clearBtn" 
                             MouseUp="color1Btn_MouseUp"
                             MouseEnter="colorBtn_MouseEnter"
@@ -172,7 +172,44 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Column="5" Grid.Row="0"
+                <WrapPanel Grid.Column="5" Grid.Row="0" x:Name="figuresPanel"
+                            Margin="10, 5" Width="100" Background="White">
+                    <Grid x:Name="square"
+                          MouseEnter="Panel_MouseEnter"
+                          MouseLeave="Panel_MouseLeave"
+                          MouseUp="square_MouseUp">
+                        <Rectangle Height="22" Width="22" Margin="5"
+                                   Stroke="Black">
+                            <Rectangle.ToolTip>
+                               Квадрат 
+                            </Rectangle.ToolTip>
+                        </Rectangle>
+                    </Grid>
+                    <Grid x:Name="circle" 
+                          MouseEnter="Panel_MouseEnter"
+                          MouseLeave="Panel_MouseLeave"
+                          MouseUp="circle_MouseUp">
+                        <Ellipse Height="18" Width="22" Margin="5"
+                                   Stroke="Black">
+                            <Ellipse.ToolTip>
+                                Еліпс
+                            </Ellipse.ToolTip>
+                        </Ellipse>
+                    </Grid>
+                    <Grid x:Name="line" 
+                          MouseEnter="Panel_MouseEnter"
+                          MouseLeave="Panel_MouseLeave"
+                          MouseUp="line_MouseUp">
+                        <Polyline Margin="5" Points="1,1 21,21"
+                                   Stroke="Black">
+                            <Polyline.ToolTip>
+                                Еліпс
+                            </Polyline.ToolTip>
+                        </Polyline>
+                    </Grid>
+                </WrapPanel>
+
+                <StackPanel Grid.Column="4" Grid.Row="0"
                             x:Name="paintBtn" 
                             MouseUp="paintBtn_MouseUp">
                     <StackPanel.ToolTip>
@@ -234,7 +271,7 @@
                     </Popup>
                 </StackPanel>
 
-                <StackPanel Grid.Column="4" Grid.Row="0">
+                <StackPanel Grid.Column="3" Grid.Row="0">
                     <Grid x:Name="elementsGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -332,7 +369,7 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Grid.Column="8" Grid.Row="0"
+                <StackPanel Grid.Column="7" Grid.Row="0"
                             x:Name="color1Btn" 
                             MouseUp="color1Btn_MouseUp"
                             MouseEnter="colorBtn_MouseEnter"
@@ -358,7 +395,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Column="7" Grid.Row="0" x:Name="sizeBtn"
+                <StackPanel Grid.Column="6" Grid.Row="0" x:Name="sizeBtn"
                             MouseEnter="Panel_MouseEnter"
                             MouseLeave="Panel_MouseLeave"
                             MouseUp="sizeBtn_MouseUp">
@@ -412,7 +449,7 @@
                     </Popup>
                 </StackPanel>
 
-                <StackPanel Grid.Column="9" Grid.Row="0"
+                <StackPanel Grid.Column="8" Grid.Row="0"
                             Background="Transparent" x:Name="color2Btn"
                             MouseUp="color2Btn_MouseUp"
                             MouseEnter="colorBtn_MouseEnter"
@@ -438,7 +475,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Grid Grid.Column="10" Grid.Row="0" Margin="5">
+                <Grid Grid.Column="9" Grid.Row="0" Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
@@ -559,7 +596,7 @@
                     </Border>
                 </Grid>
 
-                <StackPanel Grid.Column="11" Grid.Row="0"
+                <StackPanel Grid.Column="10" Grid.Row="0"
                             Background="Transparent" x:Name="diffColorBtn"
                             MouseEnter="colorBtn_MouseEnter"
                             MouseLeave="colorBtn_MouseLeave"
@@ -595,7 +632,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Column="12" Grid.Row="0"
+                <StackPanel Grid.Column="11" Grid.Row="0"
                             Background="Transparent" x:Name="paint3DBtn"
                             MouseEnter="colorBtn_MouseEnter"
                             MouseLeave="colorBtn_MouseLeave"
@@ -624,18 +661,103 @@
                     Буфер обміну
                 </TextBlock>
 
-                <TextBlock Grid.Column="4" Grid.Row="1"
+                <TextBlock Grid.Column="3" Grid.Row="1"
                            TextAlignment="Center" Foreground="Gray">
                     Знаряддя
                 </TextBlock>
 
-                <TextBlock Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="4"
+                <TextBlock Grid.Column="7" Grid.Row="1" Grid.ColumnSpan="4"
                            TextAlignment="Center" Foreground="Gray">
                     Кольори
                 </TextBlock>
             </Grid>
         </Border>
 
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0.5">
+            <Grid Background="#F5F6F7" x:Name="viewPanel"
+                  Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="0" Grid.Row="0"
+                            Margin="5">
+                    <CheckBox x:Name="stateCheckBox"
+                              Checked="stateCheckBox_Checked"
+                              Unchecked="stateCheckBox_Checked"
+                              >Рядок стану</CheckBox>
+                    <CheckBox Margin="0, 5"
+                              x:Name="directionCheckBox"
+                              Checked="directionCheckBox_Checked"
+                              Unchecked="directionCheckBox_Checked">
+                        Вертикально</CheckBox>
+                    
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="0"
+                            x:Name="maxBtn" 
+                            MouseUp="maxBtn_MouseUp"
+                            MouseEnter="Panel_MouseEnter"
+                            MouseLeave="Panel_MouseLeave">
+                    <StackPanel.ToolTip>
+                        <StackPanel MaxWidth="200">
+                            <TextBlock FontWeight="Bold" Margin="0, 5, 0, 10">
+                                            На весь екран</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow">
+                                            Розгортає програму на весь екран</TextBlock>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
+                    <StackPanel Margin="5" 
+                                MouseEnter="Panel_MouseEnter"
+                                MouseLeave="Panel_MouseLeave"
+                                MouseUp="Clear_MouseUp">
+                        <Image Source="/Images/max.png"
+                               Height="40" Width="40"></Image>
+                        <TextBlock FontSize="12" TextAlignment="Center" Margin="5"
+                                   TextWrapping="WrapWithOverflow">
+                            На весь екран</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid Grid.Column="2" Grid.Row="0" Margin="5"
+                      Width="200">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ComboBox Grid.Column="0" Grid.Row="0" Margin="3"
+                        x:Name="fontComboBox" Grid.ColumnSpan="4"></ComboBox>
+                    <ComboBox Grid.Column="0" Grid.Row="1" Margin="3"
+                        x:Name="sizeComboBox" Grid.ColumnSpan="2"></ComboBox>
+                    <CheckBox Grid.Column="2" Grid.Row="1" Margin="3"
+                        x:Name="boldComboBox" Grid.ColumnSpan="2" FontWeight="Bold"
+                        FontSize="12" VerticalAlignment="Center">B</CheckBox>
+                    <CheckBox Grid.Column="3" Grid.Row="1" Margin="3" FontFamily="Times New Roman"
+                        x:Name="italicComboBox" Grid.ColumnSpan="2" FontStyle="Italic"
+                        FontSize="12" VerticalAlignment="Center">I</CheckBox>
+                </Grid>
+
+                <TextBlock Grid.Column="0" Grid.Row="1" Margin="10, 0"
+                           TextAlignment="Center" Foreground="Gray">
+                    Відобразити чи приховати
+                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1"
+                           TextAlignment="Center" Foreground="Gray">
+                    Відобразити
+                </TextBlock>
+            </Grid>
+        </Border>
 
         <ScrollViewer Grid.Row="2" Grid.Column="0" 
                   VerticalScrollBarVisibility="Auto"
@@ -675,7 +797,7 @@
             </Grid>
         </ScrollViewer>
 
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="3" x:Name="statePanel">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>

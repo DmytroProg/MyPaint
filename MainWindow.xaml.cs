@@ -52,7 +52,8 @@ namespace MyPaint
             Pipette,
             Eraser,
             Text,
-            Paint
+            Paint,
+            Figure
         }
 
         enum PaintType
@@ -67,6 +68,7 @@ namespace MyPaint
         private PaintType paintType;
         
         private int brushSize = 3;
+        private int figureIndex = 0;
 
         private List<Polyline> polylines;
         private List<Polyline> eraserLines;
@@ -75,6 +77,7 @@ namespace MyPaint
 
         private Rectangle selectedZone;
         private Image pastedImage;
+        private Shape figure;
 
         public MainWindow()
         {
@@ -83,12 +86,42 @@ namespace MyPaint
             polygons = new List<Polygon>();
             eraserLines = new List<Polyline>();
             erasedRects = new List<Rectangle>();
+
+            SetupValues();
+
+            if (Properties.Settings.Default.Position.Width != 0 && Properties.Settings.Default.Position.Height != 0)
+            {
+                this.Width = Properties.Settings.Default.Position.Width;
+                this.Height = Properties.Settings.Default.Position.Height;
+                this.Left = Properties.Settings.Default.Position.X;
+                this.Top = Properties.Settings.Default.Position.Y;
+                (canvas.Parent as Grid).Width = Properties.Settings.Default.Canvas.X;
+                (canvas.Parent as Grid).Height = Properties.Settings.Default.Canvas.Y;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            directionCheckBox.IsChecked = Properties.Settings.Default.Vertical;
+            stateCheckBox.IsChecked = Properties.Settings.Default.State;
+        }
+
+        private void SetupValues()
+        {
             brushType = BrushType.Paint;
             paintType = PaintType.Paint;
             color1Btn.Background = new SolidColorBrush(Color.FromRgb(201, 224, 247));
             paintBtn.Background = new SolidColorBrush(Color.FromRgb(201, 224, 247));
             whTextBlock.Text = $"{(canvas.Parent as Grid).Width} x {(canvas.Parent as Grid).Height}пкс.";
             selectedZone = new Rectangle();
+            stateCheckBox.IsChecked = true;
+            foreach (var item in Fonts.SystemFontFamilies)
+                fontComboBox.Items.Add(item);
+            foreach (var item in new int[]{ 8,9,10,11,12,14,16,18,20,22,24,26,28,36,48,72 }){
+                sizeComboBox.Items.Add(item);
+            }
+            fontComboBox.SelectedIndex = 1;
+            sizeComboBox.SelectedIndex = 4;
         }
 
         private void RightRectMouseDown(object sender, MouseEventArgs e)
@@ -147,6 +180,7 @@ namespace MyPaint
             (viewTab.Parent as Border).BorderBrush = Brushes.White;
 
             mainPanel.Visibility = Visibility.Visible;
+            viewPanel.Visibility = Visibility.Hidden;
         }
 
         private void viewTab_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -157,6 +191,7 @@ namespace MyPaint
             (mainTab.Parent as Border).BorderBrush = Brushes.White;
 
             mainPanel.Visibility = Visibility.Hidden;
+            viewPanel.Visibility = Visibility.Visible;
         }
 
         private void fileTab_MouseEnter(object sender, MouseEventArgs e)
@@ -197,6 +232,13 @@ namespace MyPaint
                 (item as Grid).MouseLeave += Panel_MouseLeave;
             }
             paintBtn.Background = Brushes.Transparent;
+
+            foreach(var item in figuresPanel.Children)
+            {
+                (item as Grid).Background = Brushes.Transparent;
+                (item as Grid).MouseLeave -= Panel_MouseLeave;
+                (item as Grid).MouseLeave += Panel_MouseLeave;
+            }
         }
 
         private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -223,12 +265,32 @@ namespace MyPaint
                     r.Fill = color1.Background;
                 return;
             }
+            if(brushType == BrushType.Figure)
+            {
+                switch (figureIndex)
+                {
+                    case 1: figure = new Rectangle(); break;
+                    case 2: figure = new Ellipse(); break;
+                    case 3: figure = new Polyline(); break;
+                }
+                figure.Stroke = color1.Background;
+                figure.StrokeThickness = brushSize;
+                figure.Fill = Brushes.Transparent;
+
+                Canvas.SetTop(figure, e.GetPosition(canvas).Y);
+                Canvas.SetLeft(figure, e.GetPosition(canvas).X);
+                canvas.Children.Add(figure);
+                return;
+            }
             if(brushType == BrushType.Text && !isTexting)
             {
                 TextBox tb = new TextBox() { 
-                    FontSize = 20,
+                    FontSize = double.Parse(sizeComboBox.SelectedValue.ToString()),
+                    FontFamily = new FontFamily(fontComboBox.SelectedValue.ToString()),
                     Background = Brushes.Transparent,
                     Foreground = color1.Background,
+                    FontWeight = boldComboBox.IsChecked == true? FontWeights.Bold : FontWeights.Normal,
+                    FontStyle = italicComboBox.IsChecked == true? FontStyles.Italic : FontStyles.Normal,
                 };
                 Canvas.SetLeft(tb, e.GetPosition(canvas).X);
                 Canvas.SetTop(tb, e.GetPosition(canvas).Y);
@@ -242,6 +304,9 @@ namespace MyPaint
                 var tBox = (canvas.Children[canvas.Children.Count - 1] as TextBox);
                 TextBlock tb = new TextBlock()
                 {
+                    FontFamily = tBox.FontFamily,
+                    FontWeight = tBox.FontWeight,
+                    FontStyle = tBox.FontStyle,
                     FontSize = tBox.FontSize,
                     Background = Brushes.Transparent,
                     Foreground = tBox.Foreground,
@@ -271,6 +336,22 @@ namespace MyPaint
                 var point = e.GetPosition(canvas);
                 selectedZone.Height = Math.Max(0, point.Y - posSelection.Y);
                 selectedZone.Width = Math.Max(0, point.X - posSelection.X);
+            }
+            if(brushType == BrushType.Figure && figure != null)
+            {
+                if (figure is Polyline)
+                {
+                    (figure as Polyline).Points = new PointCollection() { 
+                        new Point(0, 0),
+                        new Point(e.GetPosition(canvas).X - Canvas.GetLeft(figure), 
+                        e.GetPosition(canvas).Y - Canvas.GetTop(figure))
+                    };
+                }
+                else
+                {
+                    figure.Height = Math.Abs(Canvas.GetTop(figure) - e.GetPosition(canvas).Y);
+                    figure.Width = Math.Abs(Canvas.GetLeft(figure) - e.GetPosition(canvas).X);
+                }
             }
             else if (isDrawing)
             {
@@ -365,6 +446,16 @@ namespace MyPaint
             }
             if(isSelecting == false && canvas.Children.Contains(selectedZone))
                 canvas.Children.Remove(selectedZone);
+            if(brushType == BrushType.Figure)
+            {
+                figure.MouseLeftButtonDown += (s, e1) =>
+                {
+                    (s as Shape).Fill = color1.Background;
+                    e1.Handled = true;
+                };
+                figure = null;
+                brushType = BrushType.None;
+            }
             if(brushType == BrushType.Text && isTexting)
             {
                 (canvas.Children[canvas.Children.Count - 1] as TextBox).Focus();
@@ -687,7 +778,7 @@ namespace MyPaint
                 e.Handled = true;
         }
 
-        private void fileStackPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        private void fileTab_MouseUp(object sender, MouseButtonEventArgs e)
         {
             filePopup.IsOpen = true;
         }
@@ -718,6 +809,13 @@ namespace MyPaint
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Properties.Settings.Default.Position = this.RestoreBounds;
+            Properties.Settings.Default.Canvas =
+                new System.Drawing.Point((int)(canvas.Parent as Grid).Width, (int)(canvas.Parent as Grid).Height);
+            Properties.Settings.Default.Vertical = directionCheckBox.IsChecked.GetValueOrDefault();
+            Properties.Settings.Default.State = stateCheckBox.IsChecked.GetValueOrDefault();
+            Properties.Settings.Default.Save();
+
             if (isSaved) return;
             MessageBoxResult result = MessageBox.Show("Файл не збережено. Бажаєте зберегти зміни перед закриттям?",
                 "MyPaint", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
@@ -756,6 +854,52 @@ namespace MyPaint
             path = null;
             format = 0;
             isSaved = true;
+        }
+
+        private void directionCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            int tempHeight = (int)(canvas.Parent as Grid).Height;
+            (canvas.Parent as Grid).Height = (canvas.Parent as Grid).Width;
+            (canvas.Parent as Grid).Width = tempHeight;
+        }
+
+        private void stateCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            (this.Content as Grid).RowDefinitions.Last().Height = 
+                (stateCheckBox.IsChecked == true) ? new GridLength(20) : new GridLength(0);
+        }
+
+        private void maxBtn_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Maximized;
+        }
+
+        private void ChooseFigure(object sender)
+        {
+            LoseSelection();
+            (sender as Grid).Background = new SolidColorBrush(Color.FromRgb(201, 224, 247));
+            (sender as Grid).MouseLeave -= Panel_MouseLeave;
+        }
+
+        private void square_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            brushType = BrushType.Figure;
+            figureIndex = 1;
+            ChooseFigure(sender);
+        }
+
+        private void circle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            brushType = BrushType.Figure;
+            figureIndex = 2;
+            ChooseFigure(sender);
+        }
+
+        private void line_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            brushType = BrushType.Figure;
+            figureIndex = 3;
+            ChooseFigure(sender);
         }
     }
 }

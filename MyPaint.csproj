@@ -163,5 +163,8 @@
     <Resource Include="Images\newDoc.png" />
     <Resource Include="Images\save.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\max.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
